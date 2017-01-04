@@ -1,0 +1,2 @@
+build --copt="-std=c++14" --copt="-Werror" --copt="-Wall" --copt="-Wextra"
+clean --expunge_async

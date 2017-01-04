@@ -1,0 +1,35 @@
+# Useless OS-specific files
+.DS_Store
+
+# Vim Swap Files
+*.sw?
+
+# EMacs Swap Files
+*.*~
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.class
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+# Compiled Python
+*.pyc
+
+.remote
+
+gmon.out
+
+tags
+
+bin/*
+.bazel.git
