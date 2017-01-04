@@ -1,0 +1,53 @@
+package(default_visibility=["//visibility:public"])
+load("/third_party/glog", "path_to_name", "path_to_out")
+
+configureopts = " ".join([
+    "--enable-shared=no",
+    "--enable-static=yes",
+    "--prefix=$$(pwd)/glog_build",
+])
+
+genrule(
+    name="glog_tar_gz",
+    outs=["glog.tar.gz"],
+    cmd="; ".join([
+        "cd external/glog_git",
+        "mkdir glog_build",
+        "./configure " + configureopts,
+        "make",
+        "make install",
+        "cd ../..",
+        "tar --create --gzip --file=$(OUTS) external/glog_git/glog_build",
+    ]),
+)
+
+generated_hdrs = [
+    "external/glog_git/glog_build/include/glog/" + hdr
+    for hdr in [
+        "log_severity.h",
+        "logging.h",
+        "raw_logging.h",
+        "stl_logging.h",
+        "vlog_is_on.h",
+    ]
+]
+
+generated_libs = ["external/glog_git/glog_build/lib/libglog.a"]
+
+[genrule(
+    name=path_to_name(path),
+    srcs=[":glog_tar_gz"],
+    outs=[path_to_out(path)],
+    cmd="; ".join([
+        "tar --extract --gzip --file=$(SRCS) " + path,
+        "mv " + path + " $(OUTS)",
+    ]),
+) for path in generated_hdrs + generated_libs]
+
+cc_library(
+    name="glog",
+    srcs=[path_to_name(path) for path in generated_hdrs + generated_libs],
+    hdrs=[path_to_name(path) for path in generated_hdrs],
+    includes=["include"],
+    linkstatic=1,
+)

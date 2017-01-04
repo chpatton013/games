@@ -1,0 +1,48 @@
+package(default_visibility=["//visibility:public"])
+
+exclude_packages = [
+    # "python",
+    # "static_assert",
+    "hana",
+    # "function",
+    "wave",
+    "smart_ptr",
+    "state_chart",
+    "mpl",
+    # "config",
+]
+
+exclude_files = glob(["**/*_fail.cpp"]) + [
+    "libs/units/test/fail_adl_detail.cpp",
+    "libs/vmd/test/test_assert_is_list_fail3.cxx",
+    "libs/wave/test/testwave/testfiles/t_9_020.cpp",
+    "libs/wave/test/testwave/testfiles/t_1_009.cpp",
+    "libs/wave/test/testwave/testfiles/t_2_012.cpp",
+    "libs/core/test/ref_rv_fail3.cpp",
+    "libs/geometry/test/algorithms/length/length_geo.cpp",
+]
+
+srcs = glob(
+    include=["libs/**/*.cpp"],
+    exclude=["libs/" + package + "/**" for package in exclude_packages] + exclude_files,
+)
+srcs = []
+hdrs = glob(
+    include=["boost/**/*.hpp"],
+    exclude=["boost/" + package + "/**" for package in exclude_packages] + exclude_files,
+)
+textual_hdrs = glob(
+    include=["boost/**/*.ipp"],
+    exclude=["boost/" + package + "/**" for package in exclude_packages] + exclude_files,
+)
+
+cc_library(
+    name="boost",
+    srcs=srcs+hdrs,
+    hdrs=hdrs,
+    textual_hdrs=textual_hdrs,
+    copts=["-Wno-error", "-Iboost"],
+    includes=["."],
+    linkopts = ["-lm"],
+    linkstatic = 1,
+)

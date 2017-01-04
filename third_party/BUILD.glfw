@@ -1,0 +1,39 @@
+package(default_visibility=["//visibility:public"])
+
+copts = " ".join([
+    "-Wno-error",
+])
+
+cmakeopts = " ".join([
+    "-DBUILD_SHARED_LIBS=OFF",
+])
+
+genrule(
+    name="libglfw3",
+    outs=["libglfw3.a"],
+    cmd="; ".join([
+        "mkdir glfw_build",
+        "cd glfw_build",
+        "CMAKE_CXX_FLAGS='" + copts + "' cmake " + cmakeopts + " ../external/glfw_git",
+        "make",
+        "cd ..",
+        "mv glfw_build/src/libglfw3.a $(OUTS)",
+    ]),
+)
+
+hdrs = [
+    "include/GLFW/glfw3.h",
+    "include/GLFW/glfw3native.h"
+]
+
+cc_library(
+    name="glfw",
+    srcs=[":libglfw3"],
+    hdrs=hdrs,
+    linkopts=[
+        "-lpthread",
+        "-ldl",
+    ],
+    includes=["include"],
+    linkstatic=1,
+)

@@ -1,0 +1,47 @@
+package(default_visibility = ["//visibility:public"])
+
+googletest_hdrs = glob([
+    "googletest/include/gtest/**/*.h",
+    "googletest/src/**/*.h",
+])
+
+cc_library(
+    name="gtest",
+    srcs=glob(
+        ["googletest/src/**/*.cc"],
+        exclude=["googletest/src/gtest_main.cc"]
+    ) + googletest_hdrs,
+    hdrs=googletest_hdrs,
+    includes=["googletest/include", "googletest"],
+    linkstatic=1,
+)
+
+cc_library(
+    name="gtest_main",
+    srcs=["googletest/src/gtest_main.cc"],
+    deps=[":gtest"],
+    linkstatic=1,
+)
+
+googlemock_hdrs = glob([
+    "googlemock/include/gtest/**/*.h",
+    "googlemock/src/**/*.h",
+])
+
+cc_library(
+    name="gmock",
+    srcs=glob(
+        ["googlemock/src/**/*.cc"],
+        exclude=["googlemock/src/gmock_main.cc"]
+    ) + googlemock_hdrs,
+    hdrs=googlemock_hdrs,
+    includes=["googlemock/include", "googlemock"],
+    linkstatic=1,
+)
+
+cc_library(
+    name="gmock_main",
+    srcs=["googlemock/src/gmock_main.cc"],
+    deps=[":gmock"],
+    linkstatic=1,
+)

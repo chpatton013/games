@@ -1,0 +1,14 @@
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name="glm",
+    srcs = glob(["glm/**/*.hpp"]),
+    hdrs = [
+        "glm/glm.hpp",
+        "glm/gtc/matrix_transform.hpp",
+        "glm/gtc/type_ptr.hpp",
+        "glm/ext.hpp"
+    ],
+    textual_hdrs = glob(["glm/**/*.inl"]),
+    includes = ["."],
+)
