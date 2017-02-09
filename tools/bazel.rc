@@ -1,2 +1,2 @@
-build --copt="-std=c++14" --copt="-Werror" --copt="-Wall" --copt="-Wextra"
-clean --expunge_async
+build --crosstool_top=//tools/cpp:default-toolchain
+build --copt="-Werror" --copt="-Wall" --copt="-Wextra"
