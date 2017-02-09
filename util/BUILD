@@ -1,18 +1,29 @@
 package(default_visibility = ["//visibility:public"])
 
 cc_library(
-    name="delegate",
-    srcs=["delegate.h"],
-    hdrs=["delegate.h"],
+    name="macros",
+    hdrs=["macros.h"],
+)
+
+cc_library(
+    name="static_string",
+    hdrs=["static_string.h"],
+    deps=[
+        "//trait:rel_ops",
+        "//trait:to_string",
+        "@glog//:glog",
+    ],
 )
 
 cc_library(
     name="expected",
-    srcs=["expected.h"],
     hdrs=["expected.h"],
     deps=[
-        "//external:boost",
-        "//external:glog",
+        ":macros",
+        "//trait:eq_ops",
+        "//trait:to_string",
+        "@boost_variant//:boost_variant",
+        "@glog//:glog",
     ],
 )
 
@@ -21,47 +32,40 @@ cc_test(
     srcs=["expected_test.cpp"],
     deps=[
         ":expected",
-        "//external:gtest_main",
+        "@gtest//:gtest_main",
     ],
 )
 
 cc_library(
-    name="error",
-    srcs=["error.h"],
-    hdrs=["error.h"],
+    name="result",
+    hdrs=["result.h"],
     deps=[
         ":expected",
-        "//external:glog",
+        ":static_string",
+        "@glog//:glog",
     ],
 )
 
 cc_test(
-    name="error_test",
-    srcs=["error_test.cpp"],
+    name="result_test",
+    srcs=["result_test.cpp"],
     deps=[
-        ":error",
-        "//external:gtest_main",
+        ":result",
+        "@gtest//:gtest_main",
     ],
 )
 
 cc_library(
-    name="rel_ops",
-    srcs=["rel_ops.h"],
-    hdrs=["rel_ops.h"],
-)
-
-cc_test(
-    name="rel_ops_test",
-    srcs=["rel_ops_test.cpp"],
+    name="result_or",
+    hdrs=["result_or.h"],
     deps=[
-        ":rel_ops",
-        "//external:gtest_main",
+        ":expected",
+        ":result",
     ],
 )
 
 cc_library(
     name="identifier",
-    srcs=["identifier.h"],
     hdrs=["identifier.h"],
 )
 
@@ -70,6 +74,21 @@ cc_test(
     srcs=["identifier_test.cpp"],
     deps=[
         ":identifier",
-        "//external:gtest_main",
+        "@gtest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name="defer",
+    hdrs=["defer.h"],
+    deps=["@gtest//:gtest_prod"],
+)
+
+cc_test(
+    name="defer_test",
+    srcs=["defer_test.cpp"],
+    deps=[
+        ":defer",
+        "@gtest//:gtest_main",
     ],
 )

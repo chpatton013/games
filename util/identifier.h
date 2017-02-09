@@ -8,28 +8,47 @@ using Id = uint64_t;
 
 class Identifier {
 public:
-  Identifier() : Identifier(0) {}
-  explicit Identifier(const Id& id) : id_(id), mutex_() {}
+  static constexpr const Id kInvalidId = 0;
 
-  ~Identifier() = default;
+  Identifier() : Identifier(1) {}
+  explicit Identifier(Id id) : id(std::move(id)), mutex() {}
+
   Identifier(const Identifier&) = delete;
-  Identifier(Identifier&&) = default;
   Identifier& operator=(const Identifier&) = delete;
-  Identifier& operator=(Identifier&&) = default;
+
+  Identifier(Identifier&& that) : Identifier(std::move(that.id)) {
+    that.id = kInvalidId;
+  }
+  Identifier& operator=(Identifier&& that) {
+    this->id = std::move(that.id);
+    that.id = kInvalidId;
+    return *this;
+  }
 
   Id reserve() {
-    std::lock_guard<std::mutex> lock(mutex_);
-    return id_++;
+    std::lock_guard<std::mutex> lock(mutex);
+    return id++;
   }
 
   const Id& next() const {
-    std::lock_guard<std::mutex> lock(mutex_);
-    return id_;
+    std::lock_guard<std::mutex> lock(mutex);
+    return id;
   }
 
 private:
-  Id id_;
-  mutable std::mutex mutex_;
+  Id id;
+  mutable std::mutex mutex;
 };
+
+static_assert(std::is_default_constructible<Identifier>::value,
+              "Identifier should be default-constructible");
+static_assert(!std::is_copy_constructible<Identifier>::value,
+              "Identifier should not be copy-constructible");
+static_assert(!std::is_copy_assignable<Identifier>::value,
+              "Identifier should not be copy-assignable");
+static_assert(std::is_move_constructible<Identifier>::value,
+              "Identifier should be move-constructible");
+static_assert(std::is_move_assignable<Identifier>::value,
+              "Identifier should be move-assignable");
 
 } // namespace util
