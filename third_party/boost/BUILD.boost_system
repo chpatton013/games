@@ -1,0 +1,9 @@
+package(default_visibility=["//visibility:private"])
+
+cc_library(
+    name="boost_system",
+    hdrs=glob(["include/boost/**/*.hpp"]),
+    includes=["include"],
+    linkstatic=1,
+    visibility=["//visibility:public"],
+)

@@ -1,0 +1,9 @@
+package(default_visibility=["//visibility:private"])
+
+cc_library(
+    name="boost_static_assert",
+    hdrs=["include/boost/static_assert.hpp"],
+    includes=["include"],
+    linkstatic=1,
+    visibility=["//visibility:public"],
+)

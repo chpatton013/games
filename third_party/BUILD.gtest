@@ -1,19 +1,27 @@
-package(default_visibility = ["//visibility:public"])
-
-googletest_hdrs = glob([
-    "googletest/include/gtest/**/*.h",
-    "googletest/src/**/*.h",
-])
+package(default_visibility=["//visibility:private"])
 
 cc_library(
     name="gtest",
-    srcs=glob(
-        ["googletest/src/**/*.cc"],
-        exclude=["googletest/src/gtest_main.cc"]
-    ) + googletest_hdrs,
-    hdrs=googletest_hdrs,
+    srcs=[
+        "googletest/src/gtest-death-test.cc",
+        "googletest/src/gtest-filepath.cc",
+        "googletest/src/gtest-internal-inl.h",
+        "googletest/src/gtest-port.cc",
+        "googletest/src/gtest-printers.cc",
+        "googletest/src/gtest-test-part.cc",
+        "googletest/src/gtest-typed-test.cc",
+        "googletest/src/gtest.cc",
+    ],
+    hdrs=glob(["googletest/include/gtest/**/*.h"]),
     includes=["googletest/include", "googletest"],
     linkstatic=1,
+    visibility=["//visibility:public"],
+)
+
+cc_library(
+    name="gtest_prod",
+    hdrs=["googletest/include/gtest/gtest_prod.h"],
+    visibility=["//visibility:public"],
 )
 
 cc_library(
@@ -21,22 +29,23 @@ cc_library(
     srcs=["googletest/src/gtest_main.cc"],
     deps=[":gtest"],
     linkstatic=1,
+    visibility=["//visibility:public"],
 )
-
-googlemock_hdrs = glob([
-    "googlemock/include/gtest/**/*.h",
-    "googlemock/src/**/*.h",
-])
 
 cc_library(
     name="gmock",
-    srcs=glob(
-        ["googlemock/src/**/*.cc"],
-        exclude=["googlemock/src/gmock_main.cc"]
-    ) + googlemock_hdrs,
-    hdrs=googlemock_hdrs,
+    srcs=[
+        "googlemock/src/gmock-cardinalities.cc",
+        "googlemock/src/gmock-internal-utils.cc",
+        "googlemock/src/gmock-matchers.cc",
+        "googlemock/src/gmock-spec-builders.cc",
+        "googlemock/src/gmock.cc",
+    ],
+    hdrs=glob(["googlemock/include/gmock/**/*.h"]),
+    deps=[":gtest"],
     includes=["googlemock/include", "googlemock"],
     linkstatic=1,
+    visibility=["//visibility:public"],
 )
 
 cc_library(
@@ -44,4 +53,5 @@ cc_library(
     srcs=["googlemock/src/gmock_main.cc"],
     deps=[":gmock"],
     linkstatic=1,
+    visibility=["//visibility:public"],
 )

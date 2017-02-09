@@ -2,7 +2,6 @@ package(default_visibility=["//visibility:public"])
 
 exclude_packages = [
     # "python",
-    # "static_assert",
     "hana",
     # "function",
     "wave",
@@ -24,21 +23,20 @@ exclude_files = glob(["**/*_fail.cpp"]) + [
 
 srcs = glob(
     include=["libs/**/*.cpp"],
-    exclude=["libs/" + package + "/**" for package in exclude_packages] + exclude_files,
+    exclude=["libs/%s/**" % package for package in exclude_packages]+exclude_files,
 )
-srcs = []
 hdrs = glob(
     include=["boost/**/*.hpp"],
-    exclude=["boost/" + package + "/**" for package in exclude_packages] + exclude_files,
+    exclude=["boost/%s/**" % package for package in exclude_packages]+exclude_files,
 )
 textual_hdrs = glob(
     include=["boost/**/*.ipp"],
-    exclude=["boost/" + package + "/**" for package in exclude_packages] + exclude_files,
+    exclude=["boost/%s/**" % package for package in exclude_packages]+exclude_files,
 )
 
 cc_library(
     name="boost",
-    srcs=srcs+hdrs,
+    srcs=srcs,
     hdrs=hdrs,
     textual_hdrs=textual_hdrs,
     copts=["-Wno-error", "-Iboost"],

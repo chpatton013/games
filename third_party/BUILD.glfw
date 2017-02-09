@@ -1,4 +1,4 @@
-package(default_visibility=["//visibility:public"])
+package(default_visibility=["//visibility:private"])
 
 copts = " ".join([
     "-Wno-error",
@@ -10,11 +10,12 @@ cmakeopts = " ".join([
 
 genrule(
     name="libglfw3",
+    srcs=glob(["**/*"]),
     outs=["libglfw3.a"],
     cmd="; ".join([
         "mkdir glfw_build",
         "cd glfw_build",
-        "CMAKE_CXX_FLAGS='" + copts + "' cmake " + cmakeopts + " ../external/glfw_git",
+        "CMAKE_CXX_FLAGS='%s' cmake %s ../external/glfw" % (copts, cmakeopts),
         "make",
         "cd ..",
         "mv glfw_build/src/libglfw3.a $(OUTS)",
@@ -36,4 +37,5 @@ cc_library(
     ],
     includes=["include"],
     linkstatic=1,
+    visibility=["//visibility:public"],
 )

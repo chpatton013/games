@@ -1,0 +1,10 @@
+package(default_visibility=["//visibility:private"])
+
+cc_library(
+    name="boost_math",
+    hdrs=glob(["include/boost/**/*.hpp"]),
+    textual_hdrs=glob(["include/boost/**/*.ipp"]),
+    includes=["include"],
+    linkstatic=1,
+    visibility=["//visibility:public"],
+)

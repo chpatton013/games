@@ -1,5 +1,9 @@
-package(default_visibility=["//visibility:public"])
-load("/third_party/glog", "path_to_name", "path_to_out")
+package(default_visibility=["//visibility:private"])
+load("@//third_party:glog.bzl", "EXTERNAL_PATH",
+                                "BUILD_DIR",
+                                "BUILD_PATH",
+                                "path_to_name",
+                                "path_to_out")
 
 configureopts = " ".join([
     "--enable-shared=no",
@@ -9,20 +13,21 @@ configureopts = " ".join([
 
 genrule(
     name="glog_tar_gz",
+    srcs=glob(["**/*"]),
     outs=["glog.tar.gz"],
     cmd="; ".join([
-        "cd external/glog_git",
-        "mkdir glog_build",
-        "./configure " + configureopts,
+        "cd %s" % EXTERNAL_PATH,
+        "mkdir %s" % BUILD_DIR,
+        "./configure %s" % configureopts,
         "make",
         "make install",
         "cd ../..",
-        "tar --create --gzip --file=$(OUTS) external/glog_git/glog_build",
+        "tar --create --gzip --file=$(OUTS) %s" % BUILD_PATH,
     ]),
 )
 
 generated_hdrs = [
-    "external/glog_git/glog_build/include/glog/" + hdr
+    "%s/include/glog/%s" % (BUILD_PATH, hdr)
     for hdr in [
         "log_severity.h",
         "logging.h",
@@ -32,22 +37,23 @@ generated_hdrs = [
     ]
 ]
 
-generated_libs = ["external/glog_git/glog_build/lib/libglog.a"]
+generated_libs = ["%s/lib/libglog.a" % BUILD_PATH]
 
 [genrule(
     name=path_to_name(path),
     srcs=[":glog_tar_gz"],
     outs=[path_to_out(path)],
     cmd="; ".join([
-        "tar --extract --gzip --file=$(SRCS) " + path,
-        "mv " + path + " $(OUTS)",
+        "tar --extract --gzip --file=$(SRCS) %s" % path,
+        "mv %s $(OUTS)" % path,
     ]),
 ) for path in generated_hdrs + generated_libs]
 
 cc_library(
     name="glog",
-    srcs=[path_to_name(path) for path in generated_hdrs + generated_libs],
+    srcs=[path_to_name(path) for path in generated_libs],
     hdrs=[path_to_name(path) for path in generated_hdrs],
     includes=["include"],
     linkstatic=1,
+    visibility=["//visibility:public"],
 )

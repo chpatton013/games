@@ -1,61 +1,183 @@
 workspace(name="gamez")
 
 new_git_repository(
-    name="assimp_git",
+    name="assimp",
     remote="https://github.com/assimp/assimp.git",
     tag="v3.3.1",
     build_file="third_party/BUILD.assimp",
 )
-bind(name="assimp", actual="@assimp_git//:assimp")
 
-new_http_archive(
-    name="boost_http",
-    url="https://sourceforge.net/projects/boost/files/boost/1.62.0/boost_1_62_0.tar.gz",
-    sha256="440a59f8bc4023dbe6285c9998b0f7fa288468b889746b1ef00e8b36c559dce1",
-    build_file="third_party/BUILD.boost",
-    strip_prefix="boost_1_62_0/",
-)
-bind(name="boost", actual="@boost_http//:boost")
+# new_git_repository(
+#     name="boost_X",
+#     remote="https://github.com/boostorg/X.git",
+#     tag="boost-1.63.0",
+#     build_file="third_party/boost/BUILD.boost_X",
+# )
 
 new_git_repository(
-    name="gflags_git",
+    name="boost_assert",
+    remote="https://github.com/boostorg/assert.git",
+    tag="boost-1.63.0",
+    build_file="third_party/boost/BUILD.boost_assert",
+)
+
+new_git_repository(
+    name="boost_concept_check",
+    remote="https://github.com/boostorg/concept_check.git",
+    tag="boost-1.63.0",
+    build_file="third_party/boost/BUILD.boost_concept_check",
+)
+
+new_git_repository(
+    name="boost_config",
+    remote="https://github.com/boostorg/config.git",
+    tag="boost-1.63.0",
+    build_file="third_party/boost/BUILD.boost_config",
+)
+
+new_git_repository(
+    name="boost_core",
+    remote="https://github.com/boostorg/core.git",
+    tag="boost-1.63.0",
+    build_file="third_party/boost/BUILD.boost_core",
+)
+
+new_git_repository(
+    name="boost_detail",
+    remote="https://github.com/boostorg/detail.git",
+    tag="boost-1.63.0",
+    build_file="third_party/boost/BUILD.boost_detail",
+)
+
+new_git_repository(
+    name="boost_functional",
+    remote="https://github.com/boostorg/functional.git",
+    tag="boost-1.63.0",
+    build_file="third_party/boost/BUILD.boost_functional",
+)
+
+new_git_repository(
+    name="boost_math",
+    remote="https://github.com/boostorg/math.git",
+    tag="boost-1.63.0",
+    build_file="third_party/boost/BUILD.boost_math",
+)
+
+new_git_repository(
+    name="boost_move",
+    remote="https://github.com/boostorg/move.git",
+    tag="boost-1.63.0",
+    build_file="third_party/boost/BUILD.boost_move",
+)
+
+new_git_repository(
+    name="boost_mpl",
+    remote="https://github.com/boostorg/mpl.git",
+    tag="boost-1.63.0",
+    build_file="third_party/boost/BUILD.boost_mpl",
+)
+
+new_git_repository(
+    name="boost_preprocessor",
+    remote="https://github.com/boostorg/preprocessor.git",
+    tag="boost-1.63.0",
+    build_file="third_party/boost/BUILD.boost_preprocessor",
+)
+
+new_git_repository(
+    name="boost_serialization",
+    remote="https://github.com/boostorg/serialization.git",
+    tag="boost-1.63.0",
+    build_file="third_party/boost/BUILD.boost_serialization",
+)
+
+new_git_repository(
+    name="boost_static_assert",
+    remote="https://github.com/boostorg/static_assert.git",
+    tag="boost-1.63.0",
+    build_file="third_party/boost/BUILD.boost_static_assert",
+)
+
+new_git_repository(
+    name="boost_system",
+    remote="https://github.com/boostorg/system.git",
+    tag="boost-1.63.0",
+    build_file="third_party/boost/BUILD.boost_system",
+)
+
+new_git_repository(
+    name="boost_throw_exception",
+    remote="https://github.com/boostorg/throw_exception.git",
+    tag="boost-1.63.0",
+    build_file="third_party/boost/BUILD.boost_throw_exception",
+)
+
+new_git_repository(
+    name="boost_type_index",
+    remote="https://github.com/boostorg/type_index.git",
+    tag="boost-1.63.0",
+    build_file="third_party/boost/BUILD.boost_type_index",
+)
+
+new_git_repository(
+    name="boost_type_traits",
+    remote="https://github.com/boostorg/type_traits.git",
+    tag="boost-1.63.0",
+    build_file="third_party/boost/BUILD.boost_type_traits",
+)
+
+new_git_repository(
+    name="boost_units",
+    remote="https://github.com/boostorg/units.git",
+    tag="boost-1.63.0",
+    build_file="third_party/boost/BUILD.boost_units",
+)
+
+new_git_repository(
+    name="boost_utility",
+    remote="https://github.com/boostorg/utility.git",
+    tag="boost-1.63.0",
+    build_file="third_party/boost/BUILD.boost_utility",
+)
+
+new_git_repository(
+    name="boost_variant",
+    remote="https://github.com/boostorg/variant.git",
+    tag="boost-1.63.0",
+    build_file="third_party/boost/BUILD.boost_variant",
+)
+
+new_git_repository(
+    name="gflags",
     remote="https://github.com/gflags/gflags.git",
     tag="v2.1.2",
     build_file="third_party/BUILD.gflags",
 )
-bind(name="gflags", actual="@gflags_git//:gflags")
 
 new_git_repository(
-    name="glfw_git",
+    name="glfw",
     remote="https://github.com/glfw/glfw.git",
     tag="3.2.1",
     build_file="third_party/BUILD.glfw",
 )
-bind(name="glfw", actual="@glfw_git//:glfw")
 
 new_git_repository(
-    name="glm_git",
+    name="glm",
     remote="https://github.com/g-truc/glm.git",
     tag="0.9.8.1",
     build_file="third_party/BUILD.glm",
 )
-bind(name="glm", actual="@glm_git//:glm")
 
 new_git_repository(
-    name="glog_git",
+    name="glog",
     remote="https://github.com/google/glog",
     tag="v0.3.4",
     build_file="third_party/BUILD.glog",
 )
-bind(name="glog", actual="@glog_git//:glog")
 
 new_git_repository(
-    name="gtest_git",
+    name="gtest",
     remote="https://github.com/google/googletest.git",
     tag="release-1.8.0",
     build_file="third_party/BUILD.gtest",
 )
-bind(name="gtest", actual="@gtest_git//:gtest")
-bind(name="gtest_main", actual="@gtest_git//:gtest_main")
-bind(name="gmock", actual="@gtest_git//:gmock")
-bind(name="gmock_main", actual="@gtest_git//:gmock_main")

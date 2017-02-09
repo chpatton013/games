@@ -1,0 +1,12 @@
+package(default_visibility=["//visibility:private"])
+
+cc_library(
+    name="boost_mpl",
+    hdrs=glob(["include/boost/**/*.hpp"]),
+    includes=["include"],
+    deps=[
+        "@boost_preprocessor//:boost_preprocessor",
+    ],
+    linkstatic=1,
+    visibility=["//visibility:public"],
+)

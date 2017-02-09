@@ -1,4 +1,4 @@
-package(default_visibility=["//visibility:public"])
+package(default_visibility=["//visibility:private"])
 
 copts = " ".join([
     "-Wno-error",
@@ -19,26 +19,27 @@ cmakeopts = " ".join([
 
 genrule(
     name="libassimp",
+    srcs=glob(
+        include=["**/*"],
+        exclude=["samples/**/*", "test/**/*"],
+    ),
     outs=["libassimp.a"],
     cmd="; ".join([
         "mkdir assimp_build",
         "cd assimp_build",
-        "CMAKE_CXX_FLAGS='" + copts + "' cmake " + cmakeopts + " ../external/assimp_git",
+        "CMAKE_CXX_FLAGS='%s' cmake %s ../external/assimp" % (copts, cmakeopts),
         "make",
         "cd ..",
         "mv assimp_build/code/libassimp.a $(OUTS)",
     ]),
 )
 
-hdrs = glob([
-    "include/assimp/**/*.h",
-    "include/assimp/**/*.inl",
-])
 
 cc_library(
     name="assimp",
     srcs=[":libassimp"],
-    hdrs=hdrs,
+    hdrs=glob(["include/assimp/**/*.h", "include/assimp/**/*.inl"]),
     includes=["include"],
     linkstatic=1,
+    visibility=["//visibility:public"],
 )

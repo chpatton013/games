@@ -1,0 +1,15 @@
+package(default_visibility=["//visibility:private"])
+
+cc_library(
+    name="boost_throw_exception",
+    hdrs=[
+        "include/boost/throw_exception.hpp",
+        "include/boost/exception/exception.hpp",
+    ],
+    includes=["include"],
+    deps=[
+        "@boost_assert//:boost_assert",
+    ],
+    linkstatic=1,
+    visibility=["//visibility:public"],
+)
