@@ -29,14 +29,15 @@ struct StaticString : public trait::ToString<StaticString>,
   template <std::size_t Size>
   constexpr StaticString(const char (&data)[Size]) noexcept
     : data(data), size(Size - 1) {
+    CHECK(Size > 0) << "Size is invalid";
     CHECK(this->data[this->size] == '\0') << "String is not null-terminated";
   }
 
   constexpr bool empty() const noexcept { return this->size == 0; }
 
   constexpr char operator[](std::size_t index) const noexcept {
-    CHECK(index < this->size) << "Index out of range: " << index << ", "
-                              << this->size;
+    CHECK(index < this->size) << "Index out of range: " << index
+                              << " not in [0," << (this->size - 1) << "]";
     return this->data[index];
   }
 
@@ -58,6 +59,10 @@ static_assert(!std::is_move_assignable<StaticString>::value,
               "StaticString should not be move-assignable");
 static_assert(std::is_literal_type<StaticString>::value,
               "StaticString should be a literal type");
+
+static_assert(StaticString("").empty(), "Empty StaticString should be empty");
+static_assert(!StaticString("abc").empty(),
+              "Non-empty StaticString should not be empty");
 
 namespace internal {
 

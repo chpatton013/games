@@ -15,6 +15,15 @@ cc_library(
     ],
 )
 
+cc_test(
+    name="static_string_test",
+    srcs=["static_string_test.cpp"],
+    deps=[
+        ":static_string",
+        "@gtest//:gtest_main",
+    ],
+)
+
 cc_library(
     name="expected",
     hdrs=["expected.h"],
