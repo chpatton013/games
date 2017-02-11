@@ -19,6 +19,11 @@ public:
     ss << cast<T>(this);
     return ss.str();
   }
+
+  operator std::string() const noexcept { return this->to_string(); }
+
+protected:
+  ~ToString() = default;
 };
 
 } // namespace trait

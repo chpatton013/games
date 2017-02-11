@@ -43,6 +43,9 @@ public:
   constexpr bool operator>=(const Rhs& that) const noexcept {
     return !(cast<Lhs>(this) < that);
   }
+
+protected:
+  ~RelOps() = default;
 };
 
 } // namespace trait
