@@ -33,13 +33,17 @@ struct StaticString : public trait::ToString<StaticString>,
     CHECK(this->data[this->size] == '\0') << "String is not null-terminated";
   }
 
-  constexpr bool empty() const noexcept { return this->size == 0; }
-
-  constexpr char operator[](std::size_t index) const noexcept {
+  constexpr char at(std::size_t index) const noexcept {
     CHECK(index < this->size) << "Index out of range: " << index
                               << " not in [0," << (this->size - 1) << "]";
     return this->data[index];
   }
+
+  constexpr char operator[](std::size_t index) const noexcept {
+    return this->at(index);
+  }
+
+  constexpr bool empty() const noexcept { return this->size == 0; }
 
   constexpr operator const char*() const noexcept { return this->data; }
 
