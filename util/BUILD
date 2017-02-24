@@ -1,6 +1,41 @@
 package(default_visibility = ["//visibility:public"])
 
 cc_library(
+    name="enum_class",
+    hdrs=["enum_class.h"],
+    deps=[
+        "//trait:rel_ops",
+        ":static_string",
+        ":template_map",
+        "@boost_preprocessor//:boost_preprocessor",
+    ],
+)
+
+cc_test(
+    name="enum_class_test",
+    srcs=["enum_class_test.cpp"],
+    deps=[
+        ":enum_class",
+        "@gtest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name="template_map",
+    hdrs=["template_map.h"],
+    deps=["@boost_preprocessor//:boost_preprocessor"],
+)
+
+cc_test(
+    name="template_map_test",
+    srcs=["template_map_test.cpp"],
+    deps=[
+        ":template_map",
+        "@gtest//:gtest_main",
+    ],
+)
+
+cc_library(
     name="macros",
     hdrs=["macros.h"],
 )
