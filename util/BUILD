@@ -88,6 +88,7 @@ cc_library(
     name="result",
     hdrs=["result.h"],
     deps=[
+        ":enum_class",
         ":expected",
         ":static_string",
         "@glog//:glog",
