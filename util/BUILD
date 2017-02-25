@@ -38,6 +38,10 @@ cc_test(
 cc_library(
     name="macros",
     hdrs=["macros.h"],
+    deps=[
+        "@boost_preprocessor//:boost_preprocessor",
+        "@glog//:glog",
+    ],
 )
 
 cc_library(
