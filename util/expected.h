@@ -151,24 +151,25 @@ static_assert(std::is_move_assignable<ExpectedAssert>::value,
 
 } // namespace util
 
-#define CHECK_EXPECTED(expr)                                                   \
+#define _CHECK_EXPECTED_IMPL(expected, expr)                                   \
   const auto expected = (expr);                                                \
   if (!expected) CHECK_FAILED(#expr, expected)
+#define CHECK_EXPECTED(expr) _CHECK_EXPECTED_IMPL(UNIQUE_VARIABLE_NAME(), expr)
 
-#define _DO_CHECK_EXPECTED_AND_ASSIGN(expected, lhs, rhs)                      \
+#define _CHECK_EXPECTED_AND_ASSIGN_IMPL(expected, lhs, rhs)                    \
   const auto expected = (rhs);                                                 \
   if (expected)                                                                \
     (lhs) = expected.value();                                                  \
   else                                                                         \
     CHECK_FAILED(#rhs, expected)
 #define CHECK_EXPECTED_AND_ASSIGN(lhs, rhs)                                    \
-  _DO_CHECK_EXPECTED_AND_ASSIGN(UNIQUE_VARIABLE_NAME(), lhs, rhs)
+  _CHECK_EXPECTED_AND_ASSIGN_IMPL(UNIQUE_VARIABLE_NAME(), lhs, rhs)
 
-#define _DO_CHECK_EXPECTED_AND_RETURN(expected, expr)                          \
+#define _CHECK_EXPECTED_AND_RETURN_IMPL(expected, expr)                        \
   const auto expected = (expr);                                                \
   if (expected)                                                                \
     return expected.value();                                                   \
   else                                                                         \
     CHECK_FAILED(#expr, expected)
 #define CHECK_EXPECTED_AND_RETURN(expr)                                        \
-  _DO_CHECK_EXPECTED_AND_RETURN(UNIQUE_VARIABLE_NAME(), expr)
+  _CHECK_EXPECTED_AND_RETURN_IMPL(UNIQUE_VARIABLE_NAME(), expr)
