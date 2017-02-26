@@ -6,8 +6,9 @@
 #include "util/expected.h"
 #include "util/macros.h"
 #include "util/static_string.h"
-#include <glog/logging.h>
-#include <sstream>
+#include <ostream>
+#include <type_traits>
+#include <utility>
 
 namespace util {
 
@@ -66,7 +67,6 @@ constexpr bool operator==(const Result<Code>& lhs,
 namespace internal {
 
 ENUM_CLASS(Code, Ok)
-using ResultAssert = Result<Code>;
 
 static_assert(!std::is_default_constructible<Result<Code>>::value,
               "Result should not be default-constructible");

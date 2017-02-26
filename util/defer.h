@@ -4,6 +4,8 @@
 #include <gtest/gtest_prod.h>
 #include <memory>
 #include <mutex>
+#include <type_traits>
+#include <utility>
 
 namespace util {
 

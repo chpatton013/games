@@ -1,6 +1,11 @@
 #pragma once
 
+#include <boost/optional.hpp>
+#include <cstdint>
+#include <glog/logging.h>
 #include <mutex>
+#include <type_traits>
+#include <utility>
 
 namespace util {
 

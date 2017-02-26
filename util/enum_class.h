@@ -89,6 +89,7 @@
 #include <array>
 #include <boost/preprocessor.hpp>
 #include <ostream>
+#include <utility>
 
 // Apply the given macro to the Nth member in the given members array.
 // Add a comma after all but the last member.

@@ -2,7 +2,11 @@
 
 #include "trait/rel_ops.h"
 #include "trait/to_string.h"
+#include <algorithm>
+#include <cstdint>
 #include <glog/logging.h>
+#include <ostream>
+#include <type_traits>
 
 namespace util {
 

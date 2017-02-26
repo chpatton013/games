@@ -6,6 +6,7 @@
 #include <boost/variant.hpp>
 #include <glog/logging.h>
 #include <ostream>
+#include <type_traits>
 #include <utility>
 
 namespace util {
