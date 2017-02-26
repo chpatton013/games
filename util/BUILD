@@ -60,7 +60,8 @@ cc_library(
     name="identifier",
     hdrs=["identifier.h"],
     deps=[
-        "@boost_optional//:boost_optional",
+        "//trait:eq_ops",
+        "//trait:to_string",
         "@glog//:glog",
     ],
 )
