@@ -1,0 +1,19 @@
+package(default_visibility=["//visibility:private"])
+
+cc_library(
+    name="boost_optional",
+    hdrs=glob(["include/boost/**/*.hpp"]),
+    includes=["include"],
+    deps=[
+        "@boost_assert//:boost_assert",
+        "@boost_config//:boost_config",
+        "@boost_core//:boost_core",
+        "@boost_move//:boost_move",
+        "@boost_utility//:boost_utility",
+        "@boost_static_assert//:boost_static_assert",
+        "@boost_throw_exception//:boost_throw_exception",
+        "@boost_type_traits//:boost_type_traits",
+    ],
+    linkstatic=1,
+    visibility=["//visibility:public"],
+)

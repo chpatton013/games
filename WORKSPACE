@@ -78,6 +78,13 @@ new_git_repository(
 )
 
 new_git_repository(
+    name="boost_optional",
+    remote="https://github.com/boostorg/optional.git",
+    tag="boost-1.63.0",
+    build_file="third_party/boost/BUILD.boost_optional",
+)
+
+new_git_repository(
     name="boost_preprocessor",
     remote="https://github.com/boostorg/preprocessor.git",
     tag="boost-1.63.0",
@@ -148,6 +155,13 @@ new_git_repository(
 )
 
 new_git_repository(
+    name="fit",
+    remote="https://github.com/pfultz2/Fit.git",
+    tag="v0.4",
+    build_file="third_party/BUILD.fit",
+)
+
+new_git_repository(
     name="gflags",
     remote="https://github.com/gflags/gflags.git",
     tag="v2.1.2",
@@ -180,4 +194,25 @@ new_git_repository(
     remote="https://github.com/google/googletest.git",
     tag="release-1.8.0",
     build_file="third_party/BUILD.gtest",
+)
+
+new_git_repository(
+    name="openal_soft",
+    remote="https://github.com/kcat/openal-soft.git",
+    tag="openal-soft-1.17.2",
+    build_file="third_party/BUILD.openal-soft",
+)
+
+new_git_repository(
+    name="range_v3",
+    remote="https://github.com/ericniebler/range-v3.git",
+    commit="85ee5c765d7f449c2658951ed2e229f422015375",
+    build_file="third_party/BUILD.range-v3",
+)
+
+new_git_repository(
+    name="sfml",
+    remote="https://github.com/SFML/SFML.git",
+    tag="2.4.1",
+    build_file="third_party/BUILD.sfml",
 )
