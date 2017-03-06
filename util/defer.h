@@ -58,7 +58,7 @@ public:
     }
   }
 
-  explicit DeferAll(Defer::Callback callback)
+  explicit DeferAll(Defer::Callback callback) noexcept
     : callback(std::move(callback)),
       reference_count(std::make_shared<int>(1)) {}
   DeferAll& operator=(Defer::Callback callback) noexcept {
@@ -68,7 +68,7 @@ public:
     return *this;
   }
 
-  DeferAll(const DeferAll& that)
+  DeferAll(const DeferAll& that) noexcept
     : callback(that.callback), reference_count(that.reference_count) {
     ++(*this->reference_count);
   }
@@ -105,14 +105,14 @@ static_assert(std::is_move_assignable<DeferAll>::value,
 class DeferAny {
 public:
   struct Synchronize {
-    Synchronize() : valid(true) {}
+    Synchronize() noexcept : valid(true) {}
     bool valid;
     std::mutex mutex;
   };
 
   ~DeferAny() { this->invoke(); }
 
-  explicit DeferAny(Defer::Callback callback)
+  explicit DeferAny(Defer::Callback callback) noexcept
     : callback(std::move(callback)),
       synchronize(std::make_shared<Synchronize>()) {}
   DeferAny& operator=(Defer::Callback callback) noexcept {
