@@ -27,18 +27,19 @@ genrule(
     cmd="; ".join([
         "mkdir assimp_build",
         "cd assimp_build",
-        "CMAKE_CXX_FLAGS='%s' cmake %s ../external/assimp" % (copts, cmakeopts),
+        "CMAKE_CXX_FLAGS='%s' cmake %s ../external/assimp" %
+            (copts, cmakeopts),
         "make",
         "cd ..",
         "mv assimp_build/code/libassimp.a $(OUTS)",
     ]),
 )
 
-
 cc_library(
     name="assimp",
     srcs=[":libassimp"],
-    hdrs=glob(["include/assimp/**/*.h", "include/assimp/**/*.inl"]),
+    hdrs=glob(["include/assimp/**/*.h"]),
+    textual_hdrs=glob(["include/assimp/**/*.inl"]),
     includes=["include"],
     linkstatic=1,
     visibility=["//visibility:public"],
