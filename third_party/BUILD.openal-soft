@@ -1,0 +1,27 @@
+package(default_visibility=["//visibility:private"])
+
+copts = " ".join([
+    "-Wno-error",
+])
+
+cmakeopts = " ".join([
+    "-DALSOFT_EXAMPLES=OFF",
+    "-DALSOFT_TESTS=OFF",
+    "-DLIBTYPE=STATIC",
+    "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
+])
+
+genrule(
+    name="libopenal",
+    srcs=glob(["**/*"]),
+    outs=["libcommon.a", "libopenal.a", "config.h"],
+    cmd="; ".join([
+        "mkdir openal_soft_build",
+        "cd openal_soft_build",
+        "CMAKE_CXX_FLAGS='%s' cmake %s ../external/openal_soft" %
+            (copts, cmakeopts),
+        "make",
+        "cd ..",
+        "echo $(OUTS) | xargs --max-args=1 --replace={} echo mv openal_soft_build/$$(basename {}) $$(dirname $(OUTS))",
+    ]),
+)

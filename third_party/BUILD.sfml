@@ -1,0 +1,228 @@
+package(default_visibility=["//visibility:private"])
+
+# TODO: Currently I have only provided SFML with the headers for its external
+# deps. This will cause linker errors when creating binaries. Fix this by
+# importing and fully building the external deps as workspace-dependencies.
+
+sfml_includes = ["include", "src"]
+
+cc_library(
+    name="sfml_config",
+    hdrs=["include/SFML/Config.hpp"],
+    includes=sfml_includes,
+    linkstatic=1,
+    visibility=["//visibility:public"],
+)
+
+android_system_srcs = glob([
+    "include/SFML/System/Android/**/*.cpp",
+    "include/SFML/System/Android/**/*.hpp",
+])
+windows_system_srcs = glob([
+    "include/SFML/System/Win32/**/*.cpp",
+    "include/SFML/System/Win32/**/*.hpp",
+])
+unix_system_srcs = glob([
+    "include/SFML/System/Unix/**/*.cpp",
+    "include/SFML/System/Unix/**/*.hpp",
+])
+common_system_srcs = glob(
+    include=["include/SFML/System/**/*.cpp", "include/SFML/System/**/*.hpp"],
+    exclude=android_system_srcs+windows_system_srcs+unix_system_srcs,
+)
+cc_library(
+    name="sfml_system",
+    hdrs=glob(["include/SFML/System.hpp", "include/SFML/System/**/*.hpp"]),
+    textual_hdrs=glob(["include/SFML/System/**/*.inl"]),
+    srcs=common_system_srcs+select({
+        "platform-freebsd": unix_system_srcs,
+        "platform-ios": unix_system_srcs,
+        "platform-linux": unix_system_srcs,
+        "platform-osx": unix_system_srcs,
+        "platform-windows": windows_system_srcs,
+    }),
+    includes=sfml_includes,
+    deps=[":sfml_config"],
+    linkstatic=1,
+    visibility=["//visibility:public"],
+)
+
+audio_hdrs = glob(["include/SFML/Audio.hpp", "include/SFML/Audio/**/*.hpp"])
+external_audio_hdrs = glob([
+    "extlibs/headers/AL/**/*.h",
+    "extlibs/headers/FLAC/**/*.h",
+    "extlibs/headers/ogg/**/*.h",
+    "extlibs/headers/vorbis/**/*.h",
+])
+external_audio_includes = [
+    "extlibs/headers",
+    "extlibs/headers/AL",
+]
+cc_library(
+    name="sfml_audio",
+    hdrs=audio_hdrs+external_audio_hdrs,
+    textual_hdrs=glob(["include/SFML/Audio/**/*.inl"]),
+    srcs=glob(["src/SFML/Audio/**/*.cpp", "src/SFML/Audio/**/*.hpp"]),
+    includes=sfml_includes+external_audio_includes,
+    deps=[":sfml_system"],
+    copts=["-Wno-sign-compare"],
+    linkstatic=1,
+    visibility=["//visibility:public"],
+)
+
+android_window_srcs = glob([
+    "include/SFML/Window/Android/**/*.cpp",
+    "include/SFML/Window/Android/**/*.hpp",
+])
+freebsd_window_srcs = glob([
+    "include/SFML/Window/FreeBSD/**/*.cpp",
+    "include/SFML/Window/FreeBSD/**/*.hpp",
+])
+ios_window_srcs = glob([
+    "include/SFML/Window/iOS/**/*.cpp",
+    "include/SFML/Window/iOS/**/*.hpp",
+])
+osx_window_srcs = glob([
+    "include/SFML/Window/OSX/**/*.cpp",
+    "include/SFML/Window/OSX/**/*.hpp",
+])
+unix_window_srcs = glob([
+    "include/SFML/Window/Unix/**/*.cpp",
+    "include/SFML/Window/Unix/**/*.hpp",
+])
+windows_window_srcs = glob([
+    "include/SFML/Window/Win32/**/*.cpp",
+    "include/SFML/Window/Win32/**/*.hpp",
+])
+common_window_srcs = glob(
+    include=["include/SFML/Window/**/*.cpp", "include/SFML/Window/**/*.hpp"],
+    exclude=android_window_srcs+
+            freebsd_window_srcs+
+            osx_window_srcs+
+            unix_window_srcs+
+            windows_window_srcs+
+            ios_window_srcs,
+)
+cc_library(
+    name="sfml_window",
+    hdrs=glob(["include/SFML/Window.hpp", "include/SFML/Window/**/*.hpp"]),
+    textual_hdrs=glob(["include/SFML/Window/**/*.inl"]),
+    srcs=common_window_srcs+select({
+        "platform-freebsd": unix_window_srcs,
+        "platform-ios": ios_window_srcs,
+        "platform-linux": unix_window_srcs,
+        "platform-osx": osx_window_srcs,
+        "platform-windows": windows_window_srcs,
+    }),
+    includes=sfml_includes,
+    deps=[":sfml_system"],
+    linkstatic=1,
+    visibility=["//visibility:public"],
+)
+
+graphics_hdrs = glob([
+    "include/SFML/Graphics.hpp",
+    "include/SFML/Graphics/**/*.hpp",
+])
+external_graphics_hdrs = glob([
+    "extlibs/headers/freetype2/**/*.h",
+    "extlibs/headers/jpeg/**/*.h",
+    "extlibs/headers/stb_image/**/*.h",
+])
+external_graphics_includes = [
+    "extlibs/headers/freetype2",
+    "extlibs/headers/jpeg",
+    "extlibs/headers/stb_image",
+]
+cc_library(
+    name="sfml_graphics",
+    hdrs=graphics_hdrs+external_graphics_hdrs,
+    textual_hdrs=glob(["include/SFML/Graphics/**/*.inl"]),
+    srcs=glob(["src/SFML/Graphics/**/*.cpp", "src/SFML/Graphics/**/*.hpp"]),
+    includes=sfml_includes+external_graphics_includes,
+    deps=[":sfml_window"],
+    linkstatic=1,
+    visibility=["//visibility:public"],
+)
+
+cc_library(
+    name="sfml_opengl",
+    hdrs=["include/SFML/OpenGL.hpp"],
+    includes=sfml_includes,
+    deps=[":sfml_config"],
+    linkstatic=1,
+    visibility=["//visibility:public"],
+)
+
+windows_network_srcs = glob([
+    "include/SFML/Network/Win32/**/*.cpp",
+    "include/SFML/Network/Win32/**/*.hpp",
+])
+unix_network_srcs = glob([
+    "include/SFML/Network/Unix/**/*.cpp",
+    "include/SFML/Network/Unix/**/*.hpp",
+])
+common_network_srcs = glob(
+    include=["include/SFML/Network/**/*.cpp", "include/SFML/Network/**/*.hpp"],
+    exclude=windows_network_srcs+unix_network_srcs,
+)
+cc_library(
+    name="sfml_network",
+    hdrs=glob(["include/SFML/Network.hpp", "include/SFML/Network/**/*.hpp"]),
+    textual_hdrs=glob(["include/SFML/Network/**/*.inl"]),
+    srcs=common_network_srcs+select({
+        "platform-freebsd": unix_network_srcs,
+        "platform-ios": unix_network_srcs,
+        "platform-linux": unix_network_srcs,
+        "platform-osx": unix_network_srcs,
+        "platform-windows": windows_network_srcs,
+    }),
+    includes=sfml_includes,
+    deps=[":sfml_system"],
+    linkstatic=1,
+    visibility=["//visibility:public"],
+)
+
+cc_library(
+    name="sfml_main",
+    hdrs=["include/SFML/Main.hpp"],
+    includes=sfml_includes,
+    deps=[":sfml_config"],
+    linkstatic=1,
+    visibility=["//visibility:public"],
+)
+
+config_setting(
+    name="platform-freebsd",
+    values={
+        "cpu": "freebsd",
+    },
+)
+
+config_setting(
+    name="platform-ios",
+    values={
+        "cpu": "ios_x86_64",
+    },
+)
+
+config_setting(
+    name="platform-linux",
+    values={
+        "cpu": "k8|piii|arm|s390x|ppc",
+    },
+)
+
+config_setting(
+    name="platform-osx",
+    values={
+        "cpu": "darwin",
+    },
+)
+
+config_setting(
+    name="platform-windows",
+    values={
+        "cpu": "x64_windows|x64_windows_msvc",
+    },
+)
